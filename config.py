@@ -17,6 +17,14 @@ _post_time_raw = os.getenv("POST_TIME_NPT", "00:00")
 _hour, _minute = (int(x) for x in _post_time_raw.split(":"))
 DAILY_POST_TIME_NPT = time(hour=_hour, minute=_minute, tzinfo=NEPAL_TZ)
 
+# AI code-help / code-review (forum channels)
+CODING_HELP_CHANNEL_ID = int(os.getenv("CODING_HELP_CHANNEL_ID", "0"))
+CODE_REVIEW_CHANNEL_ID = int(os.getenv("CODE_REVIEW_CHANNEL_ID", "0"))
+GEMINI_API_BASE = os.getenv("GEMINI_API_BASE", "https://gemini-web2api-one.vercel.app").rstrip("/")
+AI_MODEL = os.getenv("AI_MODEL", "gemini-flash-lite")
+AI_REQUEST_TIMEOUT_SECONDS = int(os.getenv("AI_REQUEST_TIMEOUT_SECONDS", "100"))
+AI_MAX_CONCURRENT_REQUESTS = int(os.getenv("AI_MAX_CONCURRENT_REQUESTS", "2"))
+
 # Trusted RSS sources. Add/remove entries here to tune coverage.
 FEEDS = {
     "intl": [
