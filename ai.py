@@ -31,7 +31,25 @@ CODE_REVIEW_SYSTEM_PROMPT = (
 GENERAL_CHAT_SYSTEM_PROMPT = (
     "You are a helpful Discord server assistant, replying because a user @mentioned you. Answer "
     "clearly and conversationally, on whatever topic they ask about (not limited to code). Keep the "
-    "whole reply under 1800 characters. Use Discord markdown where useful."
+    "whole reply under 1200 characters. Use Discord markdown where useful."
+)
+
+OUTPUT_CONTRACT = (
+    "\n\nFormatting contract (STRICT, applies to every reply):\n"
+    "- Plain Discord markdown only: **bold**, `inline code`, and bullet lists.\n"
+    "- NEVER output XML, HTML, or any tag-like markup such as <Elicitation>, <ElicitationsGroup>, "
+    "or <button>. If you are tempted to ask the user to choose between options, do NOT render "
+    "choices as markup; put short plain-text labels on the FOLLOW-UPS line instead.\n"
+    "- If a channel directory is provided, point users to channels using Discord channel mention "
+    "syntax exactly as <#channel_id>, so Discord renders them as clickable links.\n"
+    "- Put ALL code inside fenced code blocks with the language tag on the first fence line, "
+    "e.g. ```python, ```javascript, ```bash. One block per snippet, correct indentation, "
+    "never present code as plain indented text without a fence.\n"
+    "- End EVERY reply with exactly one final line of up to 3 short follow-up button labels, "
+    "formatted precisely as: FOLLOW-UPS: <label> | <label> | <label>\n"
+    "  - Each label is plain text, max 40 characters, no markdown, no markup.\n"
+    "  - Use FOLLOW-UPS: none when no meaningful follow-up exists.\n"
+    "Write nothing after the FOLLOW-UPS line."
 )
 
 
@@ -43,7 +61,7 @@ async def ask_ai(system_prompt: str, user_content: str) -> str:
     payload = {
         "model": AI_MODEL,
         "messages": [
-            {"role": "system", "content": system_prompt},
+            {"role": "system", "content": system_prompt + OUTPUT_CONTRACT},
             {"role": "user", "content": user_content},
         ],
         "stream": False,
